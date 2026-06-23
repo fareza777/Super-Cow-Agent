@@ -93,6 +93,11 @@ def start_evolution_trigger(agent_bridge) -> None:
         return
     agent_bridge._evolution_trigger_started = True
 
+    cfg = get_evolution_config()
+    if not cfg.enabled:
+        logger.info("[Evolution] Self-evolution disabled — idle trigger not started")
+        return
+
     t = threading.Thread(
         target=_scan_loop, args=(agent_bridge,), daemon=True, name="evolution-trigger"
     )
